@@ -13,28 +13,33 @@ my @choices =
 );
 
 $choice = @choices[int(rand(4))];
-$bind = `curl -s "$choice"`;
-$identifier = '<div class="arrow down login-required access-required" data-event-action="downvote" role="button" aria-label="downvote" tabindex="0" ></div></div><a class="thumbnail may-blank " href="';
+$bind = `curl -s -A "i'm not a bot I swer. mac osx safari" "$choice" -L`;
+$identifier = 'data-url="';
 
-$useTop = int(rand(18));
+$useTop = int(rand(20));
+
 for(0..$useTop)
 {
-	$bind =~ s/$identifier/∆/;
+	$bind =~ s/$identifier//;
 }
-$bind =~ s/$identifier/Ω/;
-($imageLink) = ($bind =~ /div[^Ω]*Ω([^"]+)/);
-
+#$bind =~ s/$identifier/Ω/;
+#print $bind;
+$bigMoney = "data-url";
+($imageLink) = ($bind =~ /$bigMoney[^:]*:([^"]+)/);
+#print $imageLink;
+$imageLink = "http:".$imageLink;
 if($imageLink !~ m/.jpg|.jpeg|.png/)
 {
-	$restart = $restart + 1;
+	$restart++;
 	if($restart =~ /^(10)$/){die "10 failed attemps at fetching a valid picture D:\n";}
+	sleep(1);
 	goto RESTART;
 }
 if($imageLink =~ m/.jpg/){$extension = ".jpg";}
 if($imageLink =~ m/.jpeg/){$extension = ".jpeg";}
 if($imageLink =~ m/.png/){$extension = ".png";}
 
-$imageRaw = `curl -s $imageLink`;
+$imageRaw = `curl -s -A "i'm not a bot I swer. mac osx safari" "$imageLink" -L`;
 
 my @chars = ("A".."Z", "a".."z", "0".."9");
 my $newName;
